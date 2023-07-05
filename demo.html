@@ -1,0 +1,336 @@
+<div id="glowscript" class="glowscript">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link type="text/css" href="https://www.glowscript.org/css/redmond/2.1/jquery-ui.custom.css" rel="stylesheet" />
+<link type="text/css" href="https://www.glowscript.org/css/ide.css" rel="stylesheet" />
+<script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/package/glow.3.2.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/package/RSrun.3.2.min.js"></script>
+<script type="text/javascript"><!--//--><![CDATA[//><!--
+
+// START JAVASCRIPT
+;(function() {;
+var ρσ_modules = {};
+var angle, airborne;
+ρσ_modules.pythonize = {};
+
+(function(){
+    function strings() {
+        var string_funcs, exclude, name;
+        string_funcs = set("capitalize strip lstrip rstrip islower isupper isspace lower upper swapcase center count endswith startswith find rfind index rindex format join ljust rjust partition rpartition replace split rsplit splitlines zfill".split(" "));
+        if (!arguments.length) {
+            exclude = (function(){
+                var s = ρσ_set();
+                s.jsset.add("split");
+                s.jsset.add("replace");
+                return s;
+            })();
+        } else if (arguments[0]) {
+            exclude = Array.prototype.slice.call(arguments);
+        } else {
+            exclude = null;
+        }
+        if (exclude) {
+            string_funcs = string_funcs.difference(set(exclude));
+        }
+        var ρσ_Iter0 = string_funcs;
+        ρσ_Iter0 = ((typeof ρσ_Iter0[Symbol.iterator] === "function") ? (ρσ_Iter0 instanceof Map ? ρσ_Iter0.keys() : ρσ_Iter0) : Object.keys(ρσ_Iter0));
+        for (var ρσ_Index0 of ρσ_Iter0) {
+            name = ρσ_Index0;
+            (ρσ_expr_temp = String.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name] = (ρσ_expr_temp = ρσ_str.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name];
+        }
+    };
+    if (!strings.__module__) Object.defineProperties(strings, {
+        __module__ : {value: "pythonize"}
+    });
+
+    ρσ_modules.pythonize.strings = strings;
+})();
+async function __main__() {
+"use strict";
+    var display = canvas;
+    var scene = canvas();
+
+    var version, print, arange, __name__, type, ρσ_ls, fwd, left, back, right, jump, ground, turn_left, turn_right, quit, angle, sens, dt, fps, ground_speed_cap, accel_cap, friction_factor, air_speed_cap, scene, player, player_point, space_indication, airborne, loop;
+    version = ρσ_list_decorate([ "3.2", "glowscript" ]);
+    Array.prototype['+'] = function(r) {return this.concat(r)}
+    Array.prototype['*'] = function(r) {return __array_times_number(this, r)}
+    window.__GSlang = "vpython";
+    print = GSprint;
+    arange = range;
+    __name__ = "__main__";
+    type = pytype;
+    var strings = ρσ_modules.pythonize.strings;
+
+    strings();
+    "7";
+    fwd = "w";
+    "8";
+    left = "a";
+    "9";
+    back = "s";
+    "10";
+    right = "d";
+    "12";
+    jump = " ";
+    "13";
+    ground = "ctrl";
+    "15";
+    turn_left = "left";
+    "16";
+    turn_right = "right";
+    "18";
+    quit = "l";
+    "22";
+    angle = 0;
+    "23";
+    sens = .11;
+    "27";
+    dt = 1["/"](60);
+    "28";
+    fps = 60;
+    "32";
+    ground_speed_cap = .18["*"](60);
+    "33";
+    accel_cap = ground_speed_cap["*"](15);
+    "35";
+    friction_factor = 25;
+    "39";
+    air_speed_cap = ground_speed_cap["*"](15)["/"](32);
+    "43";
+    scene = canvas();
+    "46";
+    player = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), vel: vec(0, 0, 0), size: vec(.2, .2, .1), color: color.green})]);
+    "47";
+    player_point = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: player.pos, axis: vec(0, 1, 0), shaftwidth: .03, color: color.white})]);
+    "51";
+    space_indication = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(1, 1, 0), axis: vec(.1, 1, 0), shaftwidth: .03, color: color.red})]);
+    "53";
+    scene.camera.follow(player);
+    "57";
+    airborne = false;
+    "61";
+    async function state_update(keys) {
+        "63";
+        if (ρσ_in(jump, keys)) {
+            "64";
+            player.color = color.cyan;
+            "65";
+            return true;
+            "67";
+        } else if (!ρσ_in(jump, keys)) {
+            "68";
+            player.color = color.green;
+            "69";
+            return false;
+        }
+    };
+    if (!state_update.__argnames__) Object.defineProperties(state_update, {
+        __argnames__ : {value: ["keys"]},
+        __module__ : {value: null}
+    });
+
+    "71";
+    async function look_update(keys) {
+        "73";
+        "75";
+        if (ρσ_in(turn_left, keys)) {
+            "76";
+            angle=angle["-"](sens);
+            "78";
+        }
+        if (ρσ_in(turn_right, keys)) {
+            "79";
+            angle=angle["+"](sens);
+        }
+        "81";
+        player_point.axis = vec(sin(angle), cos(angle), 0);
+    };
+    if (!look_update.__argnames__) Object.defineProperties(look_update, {
+        __argnames__ : {value: ["keys"]},
+        __module__ : {value: null}
+    });
+
+    "84";
+    async function get_direction(keys) {
+        var ρσ_ls, direction, direction_magnitude;
+        "86";
+        direction = vec(0, 0, 0);
+        "88";
+        if (ρσ_in(fwd, keys)) {
+            "89";
+            direction.y=direction.y["+"](1);
+            "91";
+        }
+        if (ρσ_in(back, keys)) {
+            "92";
+            direction.y=direction.y["-"](1);
+            "94";
+        }
+        if (ρσ_in(left, keys)) {
+            "95";
+            direction.x=direction.x["-"](1);
+            "97";
+        }
+        if (ρσ_in(right, keys)) {
+            "98";
+            direction.x=direction.x["+"](1);
+            "100";
+        }
+        if (airborne) {
+            "101";
+            if ((ρσ_in(fwd, keys) || ρσ_in(back, keys) || ρσ_in(left, keys) || ρσ_in(right, keys)) && (ρσ_in(turn_left, keys) || ρσ_in(turn_right, keys))) {
+                "102";
+                direction=direction["+"](player_point.axis);
+            }
+        }
+        "106";
+        direction_magnitude = sqrt(Math.pow(direction.x, 2)["+"](Math.pow(direction.y, 2)));
+        "108";
+        if ((direction_magnitude !== 0 && (typeof direction_magnitude !== "object" || ρσ_not_equals(direction_magnitude, 0)))) {
+            "110";
+            direction=direction["/"](direction_magnitude);
+        }
+        "112";
+        return direction;
+    };
+    if (!get_direction.__argnames__) Object.defineProperties(get_direction, {
+        __argnames__ : {value: ["keys"]},
+        __module__ : {value: null}
+    });
+
+    "115";
+    async function vel_update(keys, user_dir) {
+        var ρσ_ls, vel, speed_cap, current_speed, add_speed;
+        "117";
+        if (!airborne) {
+            "118";
+            vel = (await friction(player.vel));
+            "119";
+            speed_cap = ground_speed_cap;
+            "121";
+        } else {
+            "122";
+            vel = player.vel;
+            "123";
+            speed_cap = air_speed_cap;
+        }
+        "125";
+        current_speed = dot(vel, user_dir);
+        "126";
+        add_speed = (await clip(speed_cap["-"](1["*"](current_speed)), 0, accel_cap["*"](dt)));
+        "128";
+        vel=vel["+"](add_speed["*"](user_dir));
+        "130";
+        if (abs(vel.x)["<"](.01)) {
+            "131";
+            vel.x = 0;
+            "133";
+        }
+        if (abs(vel.y)["<"](.01)) {
+            "134";
+            vel.y = 0;
+        }
+        "136";
+        return vel;
+    };
+    if (!vel_update.__argnames__) Object.defineProperties(vel_update, {
+        __argnames__ : {value: ["keys", "user_dir"]},
+        __module__ : {value: null}
+    });
+
+    "138";
+    async function friction(vel) {
+        "139";
+        return vel["*"](1["-"](1["*"](friction_factor)["*"](dt)));
+    };
+    if (!friction.__argnames__) Object.defineProperties(friction, {
+        __argnames__ : {value: ["vel"]},
+        __module__ : {value: null}
+    });
+
+    "141";
+    async function clip(val, min_val, max_val) {
+        "142";
+        return max(min(val, max_val), min_val);
+    };
+    if (!clip.__argnames__) Object.defineProperties(clip, {
+        __argnames__ : {value: ["val", "min_val", "max_val"]},
+        __module__ : {value: null}
+    });
+
+    "145";
+    async function pos_update(keys) {
+        "146";
+        player.pos=player.pos["+"](player.vel["*"](dt));
+        "147";
+        player_point.pos = player.pos;
+    };
+    if (!pos_update.__argnames__) Object.defineProperties(pos_update, {
+        __argnames__ : {value: ["keys"]},
+        __module__ : {value: null}
+    });
+
+    "150";
+    async function repeat(keys) {
+        "151";
+        if (ρσ_in(quit, keys)) {
+            "152";
+            print("You chose to quit");
+            "153";
+            return false;
+        }
+        "155";
+        return true;
+    };
+    if (!repeat.__argnames__) Object.defineProperties(repeat, {
+        __argnames__ : {value: ["keys"]},
+        __module__ : {value: null}
+    });
+
+    "158";
+    async function main() {
+        var ρσ_ls, keys, user_dir;
+        "160";
+        "162";
+        keys = (await keysdown());
+        "164";
+        airborne = (await state_update(keys));
+        "165";
+        (await look_update(keys));
+        "166";
+        user_dir = (await get_direction(keys));
+        "168";
+        player.vel = (await vel_update(keys, user_dir));
+        "169";
+        (await pos_update(keys));
+        "171";
+        return (await repeat(keys));
+    };
+    if (!main.__module__) Object.defineProperties(main, {
+        __module__ : {value: null}
+    });
+
+    "176";
+    print("Air Strafe Demo.\n\n\""["+"](ρσ_str.format("{}", fwd.upper()))["+"]("")["+"](ρσ_str.format("{}", left.upper()))["+"]("")["+"](ρσ_str.format("{}", back.upper()))["+"]("")["+"](ρσ_str.format("{}", right.upper()))["+"]("\" to move.\nHold \"")["+"](ρσ_str.format("{}", jump))["+"]("\" to enter Air Strafe Mode.\n\"")["+"](ρσ_str.format("{}", turn_left.upper()))["+"]("\" and \"")["+"](ρσ_str.format("{}", turn_right.upper()))["+"]("\" to turn left & right.\n\"")["+"](ρσ_str.format("{}", quit.upper()))["+"]("\" to quit.\n"));
+    "178";
+    (await scene.waitfor("keydown"));
+    "180";
+    loop = true;
+    "181";
+    while (loop) {
+        "182";
+        (await rate(fps));
+        "183";
+        loop = (await main());
+    }
+};
+if (!__main__.__module__) Object.defineProperties(__main__, {
+    __module__ : {value: null}
+});
+
+;$(function(){ window.__context = { glowscript_container: $("#glowscript").removeAttr("id") }; __main__() })})()
+// END JAVASCRIPT
+
+//--><!]]></script>
+</div>
